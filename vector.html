@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Vector Analysis</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style_2.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <header>
+
+    <div class="container">
+
+      <nav>
+
+        <div class="logo">
+          GIS Student Portfolio
+        </div>
+
+        <a href="index.html" class="back-link">
+          ← Back to Portfolio
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+  <!-- =========================
+       HERO
+  ========================== -->
+
+  <section class="hero">
+
+    <div class="container">
+
+      <h1>
+        Vector Analysis: Hospital accessibility and volunteer geographical information
+      </h1>
+
+      <p>
+        I mapped accessibility of hospitals in Bratislava, the capital of my home country, and calculated the number of household in 5 and 10 minute driving distance from each hospital.
+        As the second part of the project, together with other students we collected real-life data from the city of Utrecht and used them to map percieved safety and haughtedness. 
+      </p>
+
+      <div class="hero-meta">
+
+        <div class="meta-item">
+          GIS Analysis
+        </div>
+
+        <div class="meta-item">
+          Vector Analysis
+        </div>
+
+        <div class="meta-item">
+          Public safety
+        </div>
+
+        <div class="meta-item">
+          2026
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =========================
+       FEATURE IMAGE
+  ========================== -->
+<div class="container">
+<div class="container">
+    <button class="button" onclick="showMap('map1')">Hospitals</button>
+    <button class="button" onclick="showMap('map2')">Safety</button>
+    <button class="button" onclick="showMap('map3')">Hauntedness</button>
+
+</div>
+  <div>
+    <img class="map" id="map1" src="hospitals.png">
+    <img class="map" id="map2" src="safety.png" style="display:none;">
+    <img class="map" id="map3" src="hauntedness.png" style="display:none;">
+
+    </div>
+
+</div>
+<script>
+  function showMap(mapId) {
+      const maps = document.getElementsByClassName("map");
+
+      for (let i = 0; i < maps.length; i++) {
+          maps[i].style.display = "none";
+      }
+
+      document.getElementById(mapId).style.display = "block";
+  }
+</script>  
+  <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+
+  <section>
+
+    <div class="container">
+
+      <div class="content-grid">
+
+        <!-- LEFT CONTENT -->
+        <div>
+
+          <!-- PROJECT OVERVIEW -->
+          <div class="content-card">
+
+            <h2>Project Overview</h2>
+
+            <p>
+              Healthcare accesibility is a major concern in all human settlements. This project uses vector analysis to create a visual map showing area 
+              from which the nearest hospital can be reached within 5 or 10 minutes. Five minute accesibility is important for life threathening states such as stroke, 
+              when first aid needs to be provided within 6 minutes, otherwise permanent neural damage occurs, as neurons in our brain can survive up to 6 minutes without access to oxygen.
+              Ten minute accesibility is a great advantage for all inhabitants, as anyone can experience an emergency situation with need of urgent care. I selected Bretislava,
+              the capital od Slovakia, as the city has unusual shape with multiple natural barriers and I was interested what is the accesibility of hospitals in it. 
+            </p>
+
+            <p>
+              Second part of this project is focused on real life volunteer data collection and percieved public safety. Volunteer data collection has seen wider and wider use in many 
+              scientific fields, such as ornithology, botany, metheorology, or carthogrpahy. Having practical experience collecting the data and later analyzing them gave me an important
+              perspective on how such volunteers should be trained, how important is to iform volunteers about the purpose of the data they collect, and how subjective the data collection can be.
+              We collected data during one afternoon in central and eastern areas of Utrecht and neighbouring towns. Due to not knowing purpose of the data, we chose suboptimal way
+              of collection - we split into individuals and small groups to cover as much area as possible, which later impeded the intended analysis by gender of the collector. For the analysis,
+              I used kernel density, which is a spatial analysis technique that turns point data into continuous surface. The resulting map is called heatmap and the spots with high
+              kernel density areas called heatspots - such areas represents potential sources or risk areas for certain phenomenon.
+            </p>
+
+          </div>
+
+          <!-- METHODS -->
+          <div class="content-card">
+
+            <h2>Methods</h2>
+
+            <p>
+             The hospital accesibility mapping was done using isochrones tool, which is a QGIS tool that uses external computing server to create isochrones - shaded areas which
+             borders are situated certain travel time from selected place. I downloaded and filtered data of buildings in Bratislava and created point layer with only hospitals. By using
+             isochrones tool and OpenRouteService.org, I created the isochrones of 5 and 10 minute driving distance from the nearest hospital. By overlaying the building and isochrones
+             layers I was able to calculate how many apartments are within each isochrone.
+            </p>
+
+            <p>
+            The data collection in Utrecht was done using ArcGIS Online survey. The data from the survey were transformed into vector point layer in ArcGIS Online and I analyzed
+            them in QGIS. I used vector analysis tool to create a kernel density map - a heatmap. I selected the parameters of the kernel density function, namely radius, to 200 m, as
+            the point data represent very specific locations and bigger radius would spread the "heat" from one point over a large area, distoriting the final result. 
+            </p>
+
+          </div>
+
+          <!-- RESULTS -->
+          <div class="content-card">
+
+            <h2>Results & Reflection</h2>
+
+            <p>
+              As we can see on the map of hospital accessibility above, most of the apartments within Bratislava are in 10 minute driving range from the nearest hospital.
+              The data about number of apartments within range of a specific hospital can be used to optimize allocation of patients or selection of locations of new hospitals.
+              However, it is important to realize that the isochrones are based purely on the distance and the road network and they do not take into consideration actual traffic.
+              As someone who visited Bratislava multiple times, I can definitely say that the actual ranges from which a hospital can be accesed in 10 minutes are much smaller. 
+              This fact only highlights the importance of real life data collection and integration into such models.
+            </p>
+            <p>
+            The results of the second part of the project are two heatmaps comparing the perception of safety and hauntedness by gender. However, due to previously stated limitations,
+            the comaprison by gender cannot be made from this map, as each gender covered a different area. Therefore, no actual finding has been made, as any difference between genders 
+            could be explained by difference in area. For future it is absolutely necessary to inform volunteers of exact purpose of the collected data to avoid similar mistakes. Another interesting
+            observation was that even very detailed questions with multiple examples were understood differently by different people and therefore rated differently. This means that no matter what
+            the data we collect are going to be subjective and the only thing we can do is to use them while taking our positionalities into account.
+            </p>
+
+            
+
+          </div>
+
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <div>
+
+         <!-- PROJECT DETAILS -->
+          <div class="sidebar-card">
+
+            <h3>Project Details</h3>
+
+            <p><strong>Student:</strong> Jakub Markech</p>
+
+            <p><strong>Course:</strong> GIS Summer Lab</p>
+
+            <p><strong>Instructor:</strong> Dr. Britta Ricker</p>
+
+            <p><strong>Date:</strong> Summer 2026</p>
+
+            <p><strong>Study Area:</strong> Utrecht</p>
+
+          </div>
+
+          <!-- SOFTWARE -->
+          <div class="sidebar-card">
+
+            <h3>Software & Tools</h3>
+
+            <p>QGIS</p>
+
+            <p>ArcGIS Online</p>
+
+            <p>OpenRouteService</p>
+
+
+          </div>
+
+          <!-- DOWNLOADS -->
+          <div class="sidebar-card">
+
+            <h3>Downloads</h3>
+
+            <a href="hospitals.png" class="button">
+              Download Hospitals Map
+            </a>
+            <a href="safety.png" class="button">
+              Download Safety Map
+            </a>
+            <a href="hauntedness.png" class="button">
+              Download Hauntedness Map
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer>
+
+    <div class="container">
+
+      © 2026 GIS Student Portfolio
+
+    </div>
+
+  </footer>
+
+</body>
+</html>

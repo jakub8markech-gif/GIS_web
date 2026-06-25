@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Elevation model</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style_2.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <header>
+
+    <div class="container">
+
+      <nav>
+
+        <div class="logo">
+          GIS Student Portfolio
+        </div>
+
+        <a href="index.html" class="back-link">
+          ← Back to Portfolio
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+  <!-- =========================
+       HERO
+  ========================== -->
+
+  <section class="hero">
+
+    <div class="container">
+
+      <h1>
+        Raster Elevation Map: Urban flood model
+      </h1>
+
+      <p>
+        This project is a three dimensional model of the city center of Utrecht during flood caused by 1 m sea level rise. On this web page, you can view an animation of the model
+        and a map showing the flood extend in the central Utrecht. This project was inspired by Hans van der Kwast's video tutorial, as the concept of flood analysis is highly relevant
+        here in the Netherlands, where there is minimal elevation difference and risks of floods and sea level rise are imminenet.
+      </p>
+
+      <div class="hero-meta">
+
+        <div class="meta-item">
+          GIS Analysis
+        </div>
+
+        <div class="meta-item">
+          Remote Sensing
+        </div>
+
+        <div class="meta-item">
+          Disaster Prevention
+        </div>
+
+        <div class="meta-item">
+          2026
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =========================
+       FEATURE IMAGE
+  ========================== -->
+
+    <div class="container">
+
+    <button class = "button" onclick="toggleView()">Switch View</button>
+
+<video id="map" class="feature-image" autoplay muted loop>
+    <source src="floods_Utrecht.mp4" type="video/mp4">
+</video>
+<img id="mapImage" class="feature-image"
+     src="flood.png"
+     style= "display:none; object-fit:contain;">
+
+<script>
+let showingMap = true;
+
+function toggleView() {
+    document.getElementById("map").style.display =
+        showingMap ? "none" : "block";
+
+    document.getElementById("mapImage").style.display =
+        showingMap ? "block" : "none";
+
+    showingMap = !showingMap;
+
+    // Important: refresh Leaflet when showing it again
+    if (showingMap) {
+        map.invalidateSize();
+    }
+}
+</script>
+
+  <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+
+  <section>
+
+    <div class="container">
+
+      <div class="content-grid">
+
+        <!-- LEFT CONTENT -->
+        <div>
+
+          <!-- PROJECT OVERVIEW -->
+          <div class="content-card">
+
+            <h2>Project Overview</h2>
+
+            <p>
+            Elevation data are a great resource for carthographers, as the data about the elevation and the slope of the terrain allow for modelling of various events in the nature.
+            An important use of such data is disaster prevention modelling, during which extend and spread of various natural and man-made disasters can be modelled, for example 
+            fires, floods, or environmental pollution. Most of the current elevation data come from LiDAR (Light Detection and Ranging) which is a remote sensing technology that creates
+            images of the terrain by sending and recieving laser pulses. LiDAR measures the time difference between sending the pulse and recieving first return signal and last return signal.
+            The first return signal is cuased by the first solid object the laser encounters, for example a tree canopy, and is reflected. A model made using first return signals is called 
+            Digital Elevation Model (DEM) and features all objects on the land - trees, building, and even cars. However, the uniqueness of LiDAR is that only part of the light is reflected back 
+            by the tree canopy and the rest penetrates it and can reflect from the terrain underneath. This makes it highly valued in raniforest exploration. A model mad eusing these last return
+            signal caused by reflection from the groud is called Digital Terrain Model (DTM.) 
+            </p>
+          </div>
+
+          <!-- METHODS -->
+          <div class="content-card">
+
+            <h2>Methods</h2>
+
+            <p>
+              Data for this project were obtained from the government's LiDAR coverage of the Netherlands. I downloaded DEM adn DTM maps coresponding to the central part of Utrecht, and used raster 
+              analysis tools on the DTM to create my ground layer. Next, I downloaded dat of buildings in Utrecht and used the DEM data about theur height to create three dimensional building layer.
+              Lastly, I modelled the 1 m NAP flood using vector polygon. NAP stands for Normaal Amsterdams Peil, which is the mean sea level in Amsterdam, as the Netherlands uses NAP as the unit of elevation.
+              All of the abovementioned steps have been done using QGIS, which makes it a very powerful tool in disaster modelling. The animation of the model was rendered from QGIS 3D viewer and to highlight
+              the flooded areas, the color representing the flood was changed to purple.
+            </p>
+
+          </div>
+
+          <!-- RESULTS -->
+          <div class="content-card">
+
+            <h2>Results & Reflection</h2>
+
+            <p>
+              As we can see from both the map and the animation, Utrecht is not severely endangered by the rising sea level. Most of the central part has a higher elevation than 1 NAP,
+              however northern parts might suffer flood damage. However, area of this model (36.6 square kilometers) is severely restricted due to limitations of my processor, as both DTM and DEM layers consist
+              of large image data, in this case it was 1.14 GB, which have large demand of processing memory. Despite that, model like this can still provide useful information for disaster 
+              relief workers or firefighters. The main advantage of it lies in how quickly and easily can it be rendered using actual data from an event that just happened. With trainign, anyone
+              could makes similar model within 30 minutes, making it excellent option for first response crisis forces. 
+            </p>
+
+            
+
+          </div>
+
+
+        <!-- SIDEBAR -->
+        <div>
+
+         <!-- PROJECT DETAILS -->
+          <div class="sidebar-card">
+
+            <h3>Project Details</h3>
+
+            <p><strong>Student:</strong> Jakub Markech</p>
+
+            <p><strong>Course:</strong> GIS Summer Lab</p>
+
+            <p><strong>Instructor:</strong> Dr. Britta Ricker</p>
+
+            <p><strong>Date:</strong> Summer 2026</p>
+
+            <p><strong>Study Area:</strong> Utrecht</p>
+
+          </div>
+
+          <!-- SOFTWARE -->
+          <div class="sidebar-card">
+
+            <h3>Software & Tools</h3>
+
+            <p>QGIS</p>
+
+            <p>LiDAR Data</p>
+
+            <p>Python</p>
+
+          </div>
+
+          <!-- DOWNLOADS -->
+          <div class="sidebar-card">
+
+            <h3>Downloads</h3>
+
+            <a href="floods_Utrecht.mp4" class="button">
+              Download Animation
+            </a>
+            <a href="flood.png" class="button">
+                Download Map
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer>
+
+    <div class="container">
+
+      © 2026 GIS Student Portfolio
+
+    </div>
+
+  </footer>
+
+</body>
+</html>

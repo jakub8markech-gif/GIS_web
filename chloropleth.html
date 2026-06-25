@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	
+  <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <title>Chloropleth map</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style_2.css">
+  <style>#map { width: 800px; height: 500px; }
+.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+.legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }</style>
+
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <header>
+
+    <div class="container">
+
+      <nav>
+
+        <div class="logo">
+          GIS Student Portfolio
+        </div>
+
+        <a href="index.html" class="back-link">
+          ← Back to Portfolio
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+  <!-- =========================
+       HERO
+  ========================== -->
+
+  <section class="hero">
+
+    <div class="container">
+
+      <h1>
+        Chloropleth map: SDG indicator mapping
+      </h1>
+
+      <p>
+      The Sustainable Development Goals (SDGs) is a set of 17 global goals, which member countries of the UN aspire to fulfill by 2030.
+      In this project, I created a chloropleth map showing the proportion of overweight children under the age of 5 years in 2024, which is one of the indicators for the second SDG - Zero Hunger.
+      
+      </p>
+
+      <div class="hero-meta">
+
+        <div class="meta-item">
+          GIS Analysis
+        </div>
+
+        <div class="meta-item">
+          Remote Sensing
+        </div>
+
+        <div class="meta-item">
+          Sustainability
+        </div>
+
+        <div class="meta-item">
+          2026
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =========================
+       FEATURE IMAGE
+  ========================== -->
+
+  <div class="container">
+
+    <button class = "button" onclick="toggleView()">Switch View</button>
+
+<div id="map" class="feature-image"></div>
+
+<img id="mapImage" class="feature-image"
+     src="chloropleth.png"
+     style= "display:none; object-fit:contain;">
+
+<script>
+let showingMap = true;
+
+function toggleView() {
+    document.getElementById("map").style.display =
+        showingMap ? "none" : "block";
+
+    document.getElementById("mapImage").style.display =
+        showingMap ? "block" : "none";
+
+    showingMap = !showingMap;
+
+    // Important: refresh Leaflet when showing it again
+    if (showingMap) {
+        map.invalidateSize();
+    }
+}
+</script>
+    
+    <script type="text/javascript" src="map_chloropleth.js"></script>
+    <script type="text/javascript">
+
+    	const map = L.map('map').setView([10, 10], 2);
+
+    //UPDATE above - notice the SDG15v3.js file - that is my geometry file - replace that file with your own!
+    //call the basemap you want to use
+    	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    		maxZoom: 19,
+    		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    	}).addTo(map);
+
+    	// control that shows attribute info on hover
+    	const info = L.control();
+
+    	info.onAdd = function (map) {
+    		this._div = L.DomUtil.create('div', 'info');
+    		this.update();
+    		return this._div;
+    	};
+
+    	info.update = function (props) {
+    		const contents = props ? `<b>${props.nam_en}</b><br />${props.both_2024} % of total population of children is overweight` : 'Hover over a state';
+    		this._div.innerHTML = `<h4>2.2.2 Proportion of children moderately and severely overweight</h4>${contents}`;
+    	};
+
+    	info.addTo(map);
+
+
+    	
+    	
+    	function getColor(d) {
+    		return d > 15  ? '#66000d' :
+    			d > 10.2  ? '#c6171c' :
+    			d > 6.8  ? '#f44e38' :
+    			d > 3.9   ? '#fc8f70' :
+    			d > 1.3   ? '#fcccb7' :
+    			d > 0   ? '#fef5f0' : '#969696';
+    	}
+
+    //update the fill color to your variable 
+    function style(feature) {
+    		return {
+    			weight: 2,
+    			opacity: 1,
+    			color: 'white',
+    			dashArray: '3',
+    			fillOpacity: 0.7,
+    			fillColor: getColor(Number(feature.properties.both_2024))
+    		};
+    	}
+
+    	function highlightFeature(e) {
+    		const layer = e.target;
+
+    		layer.setStyle({
+    			weight: 5,
+    			color: '#666',
+    			dashArray: '',
+    			fillOpacity: 0.7
+    		});
+
+    		layer.bringToFront();
+
+    		info.update(layer.feature.properties);
+    	}
+
+    	/* global statesData */ //UPDATE nationData
+    	const geojson = L.geoJson(nationData, {
+    		style,
+    		onEachFeature
+    	}).addTo(map);
+
+    	function resetHighlight(e) {
+    		geojson.resetStyle(e.target);
+    		info.update();
+    	}
+
+    	function zoomToFeature(e) {
+    		map.fitBounds(e.target.getBounds());
+    	}
+
+    	function onEachFeature(feature, layer) {
+    		layer.on({
+    			mouseover: highlightFeature,
+    			mouseout: resetHighlight,
+    			click: zoomToFeature
+    		});
+    	}
+
+    	map.attributionControl.addAttribution('SDG data &copy; <a href="https://unstats-undesa.opendata.arcgis.com/">UN SDG DataHub</a>');
+
+
+
+    	const legend = L.control({position: 'bottomright'});
+
+    	legend.onAdd = function (map) {
+
+    		const div = L.DomUtil.create('div', 'info legend');
+    		const grades = [0, 1.3, 3.9, 6.8, 10.2, 15];
+    		const labels = [];
+    		let from, to;
+
+    		for (let i = 0; i < grades.length; i++) {
+    			from = grades[i];
+    			to = grades[i + 1];
+
+    			labels.push(`<i style="background:${getColor(from + 1)}"></i> ${from}${to ? `&ndash;${to}%` : '% and above'}`);
+    		}
+
+    		labels.push(`<i style="background:#969696"></i>  No Data`);
+
+    		div.innerHTML = labels.join('<br>');
+    		return div;
+    	};
+
+    	legend.addTo(map);
+
+    </script>
+  </div>
+
+  <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+
+  <section>
+
+    <div class="container">
+
+      <div class="content-grid">
+
+        <!-- LEFT CONTENT -->
+        <div>
+
+          <!-- PROJECT OVERVIEW -->
+          <div class="content-card">
+
+            <h2>Project Overview</h2>
+
+            <p>
+              Child obesity is defined by UN as a form of malnutrition, as children suffering from it often lack essential nutrients for healthy development.
+              The second SDG is defined as "End hunger, achieve food security and improved nutrition and promote sustainable agriculture" and includes Target 2.2 
+              "By 2030, end all forms of malnutrition, including achieving, by 2025, the internationally agreed targets on stunting and wasting in children under 5 years of age, 
+              and address the nutritional needs of adolescent girls, pregnant and lactating women and older persons". For this reason the UNICEF/WHO/World Bank Joint Malnutrition 
+              Estimates Working Group creates estimated data of wasted and overweight children, which are the two forms of malnutrition as defined by the UN. 
+              These estimates are based on populational data collected by the individual member countries. However, as these populational statictics do not happen very frequently, 
+              there is a considerable deiscrepancy in the availability of data in different years. I choose to map data from 2024 which have relatively complete coverage of the world, except Europe.
+              The reason for mapping the child  obesity is that there exist stereotypes that obesity is a problem of developed countries, namely the United States and China, but as it
+              can be seen on the map above, this is not true and child obesity is a worldwide problem.
+              </p>
+              <p>
+              For visualization I used chloropleth map, which is a type of thematic map where shades of color represent intensities of certain measurable value. 
+              Main advantages of chloropleth maps are that they are easy to make and relatively easy to understand for broad audiences. 
+              The chloropleth maps function best for visualisation of continuous phenomena defined by geopolitical boundaries, such as state policies, economic markers, or populational data. 
+              Drawbacks of chloropleth maps are modifiable areal unit problem, size based visual impact, and color gradient scale size. Modifiable areal unit problem refers to the fact 
+              that numerical values used as data for the chloropleth maps must be normalized from absolute to relative - as example, the map above shows proportion of overweight children 
+              in the population of each country, rather than the number of overweight children. 
+              Size based visual impact refers to the fact that large countries on the chloropleth map draw the readers eyes regardless of the intensity of the observed phenomenon, 
+              while small island nations due to their small area become impossible to notice. 
+              Lastly, the number of color shades utilized requires grouping of multiple distinct numerical values under one color shown on the map. 
+              This makes chloropleth maps unsuited for obtaining precise quantitative values. 
+            </p>
+
+          </div>
+
+          <!-- METHODS -->
+          <div class="content-card">
+
+            <h2>Methods</h2>
+
+            <p>
+              All data used in this project are publicly available at UN Geospatial Hub and UN SDG Indicator Database. I proccessed the downloaded data using
+              Microsoft Excel and joined individual values of child obesity with the respective countries using QGIS software. To create an interactive map visible on this website
+              I utilised Leaflet API. For visualization, I choose monochromatic red color scheme with six steps, where dark red countries have the highest proportion of oveweight children.
+              I specifically highlighted countries with more than 15% of overweight children, as these countries should be prioritised when tackling this issue and also serve as a study model
+              of causes of childhood obesity.
+            </p>
+
+          </div>
+
+          <!-- RESULTS -->
+          <div class="content-card">
+
+            <h2>Results & Findings</h2>
+
+            <p>
+              The main outcome of this project is the interactive map itself. Due to its online and interactive form, it has potential to reach wide audiences and serve as an educational tool.
+              From the map, it is clearly visible that the child obesity is not an isolated problem of the developed countires or the Western society, but that it is a worldwide problem affecting
+              countries in all parts of the globe. As a secondary objective, this map also brings attention to childhood obesity as a form of malnutrition, which is a fact many people are unaware of.
+              While not as life-threathening as wasting, childhood obesity can have nearly as severe long-term consequences. As a final result, this map revealed eight countries with highet child 
+              obesity rates, therefore making them optimal candidates to study what drives obesity in children and how can we combat it.
+            </p>
+
+
+           </div>
+          <!-- REFLECTION -->
+          <div class="content-card">
+
+            <h2>Reflection</h2>
+
+            <p>
+              My biggest revelation from working on this project was both the immense accessibility and inaccessibility of SDG related data. On one hand, all of these data and metadta
+              are publicly available, making them a great resource for individuals, organizations and countries. On the other hand, the procedure to obtain the data from the web and 
+              proccessing them into usable format requires certain techincal knowledge and skills, which makes them inaccessible to large part of the population. 
+              Other than that, this project allowed me to get familiar with multiple carthographic softwares and basics of map design. As a surpising bonus I learned basics of 
+              colorblind-friendly graphic design.
+            </p>
+
+          </div>
+
+
+        <!-- SIDEBAR -->
+        <div>
+
+          <!-- PROJECT DETAILS -->
+          <div class="sidebar-card">
+
+            <h3>Project Details</h3>
+
+            <p><strong>Student:</strong> Jakub Markech</p>
+
+            <p><strong>Course:</strong> GIS Summer Lab</p>
+
+            <p><strong>Instructor:</strong> Dr. Britta Ricker</p>
+
+            <p><strong>Date:</strong> Summer 2026</p>
+
+            <p><strong>Study Area:</strong> Utrecht</p>
+
+          </div>
+
+          <!-- SOFTWARE -->
+          <div class="sidebar-card">
+
+            <h3>Software & Tools</h3>
+
+            <p>QGIS</p>
+
+            <p>UN Database</p>
+
+            <p>Leaflet API</p>
+
+            <p>GitHub</p>
+
+            <p>JavaScript</p>
+
+          </div>
+
+          <!-- DOWNLOADS -->
+          <div class="sidebar-card">
+
+            <h3>Downloads</h3>
+
+            <a href="chloropleth.png" class="button">
+              Download Map
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer>
+
+    <div class="container">
+
+      © 2026 GIS Student Portfolio
+
+    </div>
+
+  </footer>
+
+</body>
+</html>

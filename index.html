@@ -1,161 +1,358 @@
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<base target="_top">
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<title>SDG Map with Leaflet</title>
-	
-	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <title>GIS Student Portfolio</title>
 
-	<style>
-		html, body {
-			height: 100%;
-			margin: 0;
-		}
-		.leaflet-container {
-			height: 400px;
-			width: 600px;
-			max-width: 100%;
-			max-height: 100%;
-		}
-	</style>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-	<style>#map { width: 800px; height: 500px; }
-.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
-.legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }</style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style_1.css">
+
 </head>
+
 <body>
-<h2>
-<b>SDG 2
-<b> End hunger, achieve food security and improved nutrition and promote sustainable agriculture <br>
-<br> <b>SDG Target 15.1 <b> By 2030, end all forms of malnutrition, including achieving, by 2025, the internationally agreed targets on stunting and wasting in children under 5 years of age, and address the nutritional needs of adolescent girls, pregnant and lactating women and older persons
-</h2>
-<div id='map'></div>
-<script type="text/javascript" src="map_chloropleth.js"></script>
-<script type="text/javascript">
 
-	const map = L.map('map').setView([10, 10], 2);
+  <!-- ======================
+       HEADER
+  ======================= -->
 
-//UPDATE above - notice the SDG15v3.js file - that is my geometry file - replace that file with your own!
-//call the basemap you want to use
-	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 19,
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	}).addTo(map);
+  <header>
 
-	// control that shows attribute info on hover
-	const info = L.control();
+    <div class="container">
 
-	info.onAdd = function (map) {
-		this._div = L.DomUtil.create('div', 'info');
-		this.update();
-		return this._div;
-	};
+      <nav>
 
-	info.update = function (props) {
-		const contents = props ? `<b>${props.nam_en}</b><br />${props.both_2024} % of total population of children is overweight` : 'Hover over a state';
-		this._div.innerHTML = `<h4>2.2.2 Proportion of children moderately and severely overweight</h4>${contents}`;
-	};
+        <div class="logo">
+          GIS Portfolio
+        </div>
 
-	info.addTo(map);
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#maps">Maps</a>
+          <a href="#skills">Skills</a>
+          <a href="#contact">Contact</a>
+        </div>
 
+      </nav>
 
-	
-	
-	function getColor(d) {
-		return d > 15  ? '#66000d' :
-			d > 10.2  ? '#c6171c' :
-			d > 6.8  ? '#f44e38' :
-			d > 3.9   ? '#fc8f70' :
-			d > 1.3   ? '#fcccb7' :
-			d > 0   ? '#fef5f0' : '#969696';
-	}
+    </div>
 
-//update the fill color to your variable 
-function style(feature) {
-		return {
-			weight: 2,
-			opacity: 1,
-			color: 'white',
-			dashArray: '3',
-			fillOpacity: 0.7,
-			fillColor: getColor(Number(feature.properties.both_2024))
-		};
-	}
+  </header>
 
-	function highlightFeature(e) {
-		const layer = e.target;
+  <!-- ======================
+       HERO
+  ======================= -->
 
-		layer.setStyle({
-			weight: 5,
-			color: '#666',
-			dashArray: '',
-			fillOpacity: 0.7
-		});
+  <section class="hero">
 
-		layer.bringToFront();
+    <div class="container">
 
-		info.update(layer.feature.properties);
-	}
+      <div class="hero-grid">
 
-	/* global statesData */ //UPDATE nationData
-	const geojson = L.geoJson(nationData, {
-		style,
-		onEachFeature
-	}).addTo(map);
+        <div>
 
-	function resetHighlight(e) {
-		geojson.resetStyle(e.target);
-		info.update();
-	}
+          <h1>
+            Student GIS & Cartography Portfolio
+          </h1>
 
-	function zoomToFeature(e) {
-		map.fitBounds(e.target.getBounds());
-	}
+          <p>
+            A professional showcase of mapping projects,
+            spatial analysis, remote sensing,
+            and cartographic design work.
+          </p>
 
-	function onEachFeature(feature, layer) {
-		layer.on({
-			mouseover: highlightFeature,
-			mouseout: resetHighlight,
-			click: zoomToFeature
-		});
-	}
+          <a href="#maps" class="button">
+            View Maps
+          </a>
 
-	map.attributionControl.addAttribution('SDG data &copy; <a href="https://unstats-undesa.opendata.arcgis.com/">UN SDG DataHub</a>');
+        </div>
 
+        <div class="hero-card">
 
+          <h3>Portfolio Highlights</h3>
 
-	const legend = L.control({position: 'bottomright'});
+          <ul>
+            <li>• GIS Mapping Projects</li>
+            <li>• Spatial Analysis</li>
+            <li>• Remote Sensing</li>
+            <li>• Cartographic Design</li>
+            <li>• Sustainability Applications</li>
+            <li>• Interactive Web Maps</li>
+          </ul>
 
-	legend.onAdd = function (map) {
+        </div>
 
-		const div = L.DomUtil.create('div', 'info legend');
-		const grades = [0, 1.3, 3.9, 6.8, 10.2, 15];
-		const labels = [];
-		let from, to;
+      </div>
 
-		for (let i = 0; i < grades.length; i++) {
-			from = grades[i];
-			to = grades[i + 1];
+    </div>
 
-			labels.push(`<i style="background:${getColor(from + 1)}"></i> ${from}${to ? `&ndash;${to}%` : '% and above'}`);
-		}
+  </section>
 
-		labels.push(`<i style="background:#969696"></i>  No Data`);
+  <!-- ======================
+       ABOUT
+  ======================= -->
 
-		div.innerHTML = labels.join('<br>');
-		return div;
-	};
+  <section id="about">
 
-	legend.addTo(map);
+    <div class="container">
 
-</script>
+      <div class="section-title">
+        <h2>About Me</h2>
+
+        <p>
+          
+        </p>
+      </div>
+
+      <div class="about-box">
+
+        <p>
+          Hi! My name is Jakub Markech, I am a first year student at University College Utrecht and I come from Slovakia. 
+          My main academic focus is in the fields of chemistry, biology and medical science. 
+          Aside from academics I play the guitar, read, and enjoy spending time in nature or hiking. 
+          This website is a portfolio of maps I made during GIS summer course, showing various applications of geographical systems on problems of the 21st century.
+          
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ======================
+       MAPS
+  ======================= -->
+
+  <section id="maps">
+
+    <div class="container">
+
+      <div class="section-title">
+
+        <h2>Map Portfolio</h2>
+
+        
+      </div>
+
+      <div class="map-grid">
+
+        <!-- MAP 1 -->
+    <a href="chloropleth.html" class="card-link">     
+        <div class="map-card" >
+          <div class="map-image">
+            <img class="map-image" src="chloropleth.png">
+          </div>
+
+          <div class="map-content">
+
+            <h3>Chloropleth map</h3>
+
+            <p>
+              Chloropleth map of proportion of overweight children across the world
+            </p>
+
+          </div>
+
+        </div>
+    </a>
+        <!-- MAP 2 -->
+    <a href="vector.html" class="card-link">       
+        <div class="map-card">
+
+          <div class="map-image">
+            <img class="map-image" src="hospitals.png">
+          </div>
+
+          <div class="map-content">
+
+            <h3>Vector analysis</h3>
+
+            <p>
+              Visualization of driving distance to nearest hospital in Bratislava
+            </p>
+
+          </div>
+
+        </div>
+    </a>
+        <!-- MAP 3 -->
+    <a href="elevation.html" class="card-link">        
+        <div class="map-card">
+
+          <div class="map-image">
+            <img src="flood.png">
+          </div>
+
+          <div class="map-content">
+
+            <h3>Urban flood model</h3>
+
+            <p>
+              Model of flood in the central Utrecht after 1 m sea level rise
+            </p>
+
+          </div>
+
+        </div>
+    </a>
+        <!-- MAP 4 -->
+    <a href="vegetation.html" class="card-link">
+        <div class="map-card">
+
+          <div class="map-image">
+            MAP IMAGE 4
+          </div>
+
+          <div class="map-content">
+
+            <h3>Project Title 4</h3>
+
+            <p>
+              Add project summary,
+              software used, or technical skills demonstrated.
+            </p>
+
+          </div>
+
+        </div>
+    </a>
+        <!-- MAP 5 -->
+    <a href="classification.html" class="card-link">        
+        <div class="map-card">
+
+          <div class="map-image">
+            MAP IMAGE 5
+          </div>
+
+          <div class="map-content">
+
+            <h3>Project Title 5</h3>
+
+            <p>
+              Explain the analytical approach
+              and major findings from the project.
+            </p>
+
+          </div>
+
+        </div>
+    </a>
+        <!-- MAP 6 -->
+    <a href="multivariate.html" class="card-link">       
+        <div class="map-card">
+
+          <div class="map-image">
+            MAP IMAGE 6
+          </div>
+
+          <div class="map-content">
+
+            <h3>Project Title 6</h3>
+
+            <p>
+              Include reflections on the project,
+              lessons learned, or future improvements.
+            </p>
+
+          </div>
+
+        </div>
+    </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ======================
+       SKILLS
+  ======================= -->
+
+  <section id="skills">
+
+    <div class="container">
+
+      <div class="section-title">
+
+        <h2>Technical Skills</h2>
+
+        <p>
+          Highlight GIS software, programming languages,
+          and spatial analysis methods.
+        </p>
+
+      </div>
+
+      <div class="about-box">
+
+        <div class="skills">
+
+          <div class="skill">QGIS</div>
+          <div class="skill">ArcGIS Pro</div>
+          <div class="skill">Google Earth Engine</div>
+          <div class="skill">Remote Sensing</div>
+          <div class="skill">Spatial Analysis</div>
+          <div class="skill">Cartography</div>
+          <div class="skill">Python</div>
+          <div class="skill">JavaScript</div>
+          <div class="skill">GeoJSON</div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ======================
+       CONTACT
+  ======================= -->
+
+  <section id="contact">
+
+    <div class="container">
+
+      <div class="section-title">
+
+        <h2>Contact</h2>
+
+      </div>
+
+      <div class="contact-card">
+
+        <p><strong>Name:</strong> Jakub Markech</p>
+
+        <p><strong>Email:</strong> j.markech@students.uu.nl</p>
+
+        <p><strong>University:</strong>Utrecht University</p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ======================
+       FOOTER
+  ======================= -->
+
+  <footer>
+
+    <div class="container">
+
+      © 2026 GIS Student Portfolio
+
+    </div>
+
+  </footer>
+
 </body>
 </html>
-
