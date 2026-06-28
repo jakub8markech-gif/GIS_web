@@ -49,14 +49,13 @@
     <div class="container">
 
       <h1>
-        Project Title
+        Vegetation Indices Mapping
       </h1>
 
       <p>
-        Write a short professional summary of the project here.
-        Explain the purpose of the project,
-        the research question,
-        or the sustainability challenge addressed.
+        This project maps the change in vegetation coverage and health of my home region in Slovakia between the years 2018 and 2025. I used Sentinel 2 multispectral satellite 
+        imagery to map the vegetation and calculate the Normalized Vegetation Difference Index (NDVI) to asses the health of vegetation. By subtracting the 2018 data from the data
+        from 2025, I was able to map change in the NDVI and visualize which areas were deforested and where did the vegetation health increase.
       </p>
 
       <div class="hero-meta">
@@ -89,12 +88,36 @@
 
   <div class="container">
 
-    <div class="feature-image">
-      MAIN MAP / PROJECT IMAGE
+    <div class="container">
+    <button class="button" onclick="showMap('map1')">True color 2018</button>
+    <button class="button" onclick="showMap('map2')">NDVI 2018</button>
+    <button class="button" onclick="showMap('map3')">True color 2025</button>
+    <button class="button" onclick="showMap('map4')">NDVI 2025</button>
+    <button class="button" onclick="showMap('map5')">NDVI change 2018-2025</button>
+    
+    </div>
+    
+    <div>
+    <img class="map" id="map1" src="roi_18.png">
+    <img class="map" id="map2" src="ndvi_18.png" style="display:none;">
+    <img class="map" id="map3" src="roi_25.png" style="display:none;">
+    <img class="map" id="map4" src="ndvi_25.png" style="display:none;">
+    <img class="map" id="map5" src="ndvi_change.png" style="display:none;">
+
     </div>
 
   </div>
+<script>
+  function showMap(mapId) {
+      const maps = document.getElementsByClassName("map");
 
+      for (let i = 0; i < maps.length; i++) {
+          maps[i].style.display = "none";
+      }
+
+      document.getElementById(mapId).style.display = "block";
+  }
+</script>
   <!-- =========================
        MAIN CONTENT
   ========================== -->
@@ -114,21 +137,29 @@
             <h2>Project Overview</h2>
 
             <p>
-              Introduce the project in more detail here.
-              Describe the context, motivation,
-              and overall goals of the work.
+             This project uses multispectral satellite imagery from Sentinel 2 to monitor change in vegetation. Multispectral imagery collects reflected electromagneitc
+             radiation from object on the ground. Different composition of objects cause them to reflect absorb and reflect different parts of electromagnetic spectra of sunlight,
+             which acts as power source for such satellite imagery. By measuring different parts of spectra, which are in multispectral imagery called bands, composition of objects 
+             on the ground can be identified and visualized. This has widespread use in land use classification, agriculture planning, geology, coastal mapping, and urban development as
+             changing which bands are visualized on the map changes what becomes highlighted. Specific use of multispectral imagery is in sustainable development, as it allows to 
+             assess the health of plants and vegetation. This is due to fact that healthier plants reflect more of the near infrared (NIR) spectrum and obsorb more of the visible red light.
+             By changing the map colors from true color to false color composite showing (NIR) spectrum, we can see which plants are healthy without any on-site measurement. This allows for
+             more efficient land use, better monitoring of nature conservation areas, and prevention of environmental crimes. These applications are simplified through use of vegetation indexes, 
+             which are mathematical formulas that transform multispectral data into informations about plant health, growth and density. I used Normalized Vegetation Difference Index (NDVI), which 
+             is the most common one in vegetation monitoring. NDVI is calculated by dividing the difference between red and NIR radiation by sum of those radiations and attains values between -1 an 1.
+             Negative values represent non-vegetation surfaces and the health of the vegetation increases with higher NDVI values.         
             </p>
 
             <p>
-              This section can explain:
+            For this project I selected my home region in Slovakia and the tile coresponding to it. Tile is a area unit of Sentinel 2 satellites. Sentinel 2 is an European space mission consisting 
+            of two polar-orbiting satellites synchronised with the sun as they capture reflected sunlight. The satellites capture multispectral imagery of Earth surface in 290 km wide swaths covering the whole Earth surface in 5 days, with one 
+            satellite orbiting the Earth parallel to the equator and the other parallel to meridians. This coverage divides the Earth surface into squre shaped regions - tiles. 
+            To obtain the tiles, the data must be first processed through orthorectification software, which removes camera tilt, lens distortion, and topographical displacement and georeferences the 
+            images to correct locations. The result is an orthomosaic, which is a highly detailed 2D map aerial map. To create a usable orthomosaic from Sentinel 2 data, it is neccesary to create
+            and average of the scans from certain time period. This is neccesary as often in individual scans there are some areas missing due to sensor malfunction or clouds. By averaging the data
+            over one year, these errors can be eliminated and a good coverage of vegetation can be achieved, as the vegetation in different seasons absorbs and refletcs the light differently.
             </p>
 
-            <ul>
-              <li>Research objectives</li>
-              <li>Study area</li>
-              <li>Environmental or social relevance</li>
-              <li>Why GIS methods were appropriate</li>
-            </ul>
 
           </div>
 
@@ -138,68 +169,36 @@
             <h2>Methods</h2>
 
             <p>
-              Describe the GIS workflow and methods used.
+              Satellite data were obtained and processed using Google Earth Engine using JavaScript code by Dr. Britta Ricker (available on GitHub). Resulting orthomosaics were 
+              uploaded to QGIS and NDVI was calculated using raster calculator tool. The NDVI change was calculated by subtracting 2018 NDVI from 2025 NDVI, resulting in
+              positive values representing increase in vegetation coverage or health and negative values representing vegetation loss.
             </p>
 
-            <ul>
-              <li>Data collection</li>
-              <li>Spatial analysis techniques</li>
-              <li>Remote sensing processing</li>
-              <li>Cartographic design choices</li>
-              <li>Software and tools used</li>
-            </ul>
 
           </div>
 
           <!-- RESULTS -->
           <div class="content-card">
 
-            <h2>Results & Findings</h2>
+            <h2>Results & Reflection</h2>
 
             <p>
-              Explain the major findings of the project.
-              Discuss spatial patterns,
-              environmental implications,
-              or planning recommendations.
+              Overall, the NDVI index of the region increased, and in most areas it was an increase up to 0.3, which can be best explained by better plant health. 
+              New vegetation was likely planted in the dark green regions in the middle of the NDVI change map, while some parcels in the northwest were deforested.
+              Interesting feature that becomes visible on the NDVI change map is the dark red line from center to southeastern corner of the map, which likely corespondes to 
+              a new road, which construction led to deforestation in that area. This change is not observable from the true color maps, but becomes highlighted in multispectral false color 
+              composite, being a good example of how multispectral imagery can be used to uncover environmental crimes.
             </p>
-
-            <div class="gallery">
-
-              <div class="gallery-item">
-                MAP / GRAPHIC 1
-              </div>
-
-              <div class="gallery-item">
-                MAP / GRAPHIC 2
-              </div>
-
-              <div class="gallery-item">
-                MAP / GRAPHIC 3
-              </div>
-
-            </div>
+            <p>
+            I really liked working on this project, not only becuase it is connected to a region I am familiar with, but also because I see great potential use for the skills of 
+            working with multispectral satellite data. It is as if I suddenly gained the ability to see the world not only in the visible spectrum, but in all spectra from infrared to ultraviolet.
+            I found fascinating the techique of assigning different spectral bands to red, green and blue colors and using it to highlight different features. I do not think much could be improved
+            in this project.
+            
 
           </div>
 
-          <!-- REFLECTION -->
-          <div class="content-card">
-
-            <h2>Reflection</h2>
-
-            <p>
-              Discuss lessons learned,
-              project limitations,
-              and ideas for future improvements.
-            </p>
-
-            <p>
-              This section is useful for showing critical thinking,
-              technical growth,
-              and understanding of spatial analysis.
-            </p>
-
-          </div>
-
+         
         </div>
 
         <!-- SIDEBAR -->
@@ -229,13 +228,9 @@
 
             <p>QGIS</p>
 
-            <p>ArcGIS Pro</p>
-
             <p>Google Earth Engine</p>
 
-            <p>MapLibre GL</p>
-
-            <p>Python</p>
+            <p>JavaScript</p>
 
           </div>
 
@@ -244,10 +239,21 @@
 
             <h3>Downloads</h3>
 
-            <a href="#" class="button">
-              Download Map
+            <a href="roi_18.png" class="button">
+              Download True Color 2018 Map
             </a>
-
+            <a href="roi_25.png" class="button">
+             Download True Color 2025 Map
+            </a>
+            <a href="ndvi_18.png" class="button">
+              Download NDVI 2018 Map
+            </a>
+            <a href="ndvi_25.png" class="button">
+              Download NDVI 2025 Map
+            </a>
+            <a href="ndvi_change.png" class="button">
+              Download NDVI Change Map
+              </a>
           </div>
 
         </div>

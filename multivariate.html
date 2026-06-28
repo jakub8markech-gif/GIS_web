@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>GIS Project Title</title>
+  <title>Multicriteria Analysis</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,14 +49,15 @@
     <div class="container">
 
       <h1>
-        Project Title
+        Multicriteria analysis
       </h1>
 
       <p>
-        Write a short professional summary of the project here.
-        Explain the purpose of the project,
-        the research question,
-        or the sustainability challenge addressed.
+         Multicriteria Analysis (MCA) is a complex analysis method which analyses multiple criteria for one specific purpose. In the field of geoscience, this means combining different sets of data (elevation, land use, proximity to roads, environmental factors) and assigning each criterion a specific weight factor representing 
+              the importance of that specific factor on the results of the analysis. Example of multicriteria analysis usign GIS would be finding the most suitable places for urban greeining. For such analysis, the evaluated criteria for every location could be slope, average temperature, road proximity, and population density.
+                Assignment of the weight factors would depend on the local environment, decisions of the analysts and experts, and the type of analysis algorythm used. Precisely becuase of the freedom in criteria selection and weight factor determination MCA is widely utilized together with GIS, as GIS inherently incorporate wide assortment of data usefol for analyses. 
+                Other than already mentioned urban greening, MCA is commonly used to answer simiral questions in urban and ifrastructure planning, agriculture, disaster prevention, environmental conservation and other. MCA can also be used to make predictive models to model migration, ocean current change, or the weather - wather forecast is´entirely reliant on GIS data coupled with MCA.
+                
       </p>
 
       <div class="hero-meta">
@@ -83,17 +84,6 @@
 
   </section>
 
-  <!-- =========================
-       FEATURE IMAGE
-  ========================== -->
-
-  <div class="container">
-
-    <div class="feature-image">
-      MAIN MAP / PROJECT IMAGE
-    </div>
-
-  </div>
 
   <!-- =========================
        MAIN CONTENT
@@ -111,97 +101,67 @@
           <!-- PROJECT OVERVIEW -->
           <div class="content-card">
 
-            <h2>Project Overview</h2>
+            <h2>Using GIS and outranking multicriteria analysis for land-use suitability assesment (Joerin, Thériault, Musy, 2010)</h2>
 
             <p>
-              Introduce the project in more detail here.
-              Describe the context, motivation,
-              and overall goals of the work.
+              This scientific paper by Joerin, Thériault, and Musy from 2010 is a grate example how multicriteria analysis can be used together with GIS data. The researchers applied MCA to develop an easy to use system of land use suitability determination with the goal of facilitating cooperation between stakeholders in land development.
+              For the purpose of the study the scientists created a land suitability map for housing of an 50 square kilometer area in Vaud, Switzerland. The area was represented in GIS both in vector and raster format. The vector layer was used for data management, whereas the raster layer was used for actual spatial analysis.
+              This raster layer was composed of 80 000 25x25 m pixels.   
             </p>
 
             <p>
-              This section can explain:
-            </p>
-
+              The MCA in this study used 8 criteria:
             <ul>
-              <li>Research objectives</li>
-              <li>Study area</li>
-              <li>Environmental or social relevance</li>
-              <li>Why GIS methods were appropriate</li>
+              <li>Environmental impact</li>
+              <li>Air pollution</li>
+              <li>Noise level</li>
+              <li>Accesibility</li>
+              <li>Local climate</li>
+              <li>Risk of landslide</li>
+              <li>Distance to public facilities</li>
+              <li>Viewpoint quality</li>
             </ul>
-
+            </p>
+                    
+          <p>
+          These criteria were selected as they cover interests of all important stakeholders in housing domain. In the Switzerland, the noise levels in residential areas are regulated by law, which gave that criterion more weight than it would have otherwise, or the criterion of flood risk is entiraly missing, as the Vaud canton does not experience floods.
+          </p>
+          
+          <p>
+          To analyze the land use suitability, researchers used outranking analysis method ELECTRE-TRI. Outranking analysis is based on comparing all possible alternatives, which in this case would mean comparing all 80 000 pixel between each other, which is computationally infeasible.
+          To make use of outranking analysis possible, researchers first divided the studied area into homogenous zones - zones with all criteria within certain ranges. This division was done by creating maps of each criterion using unsupervised classification and overlaying them together with discontinuous spatial limits (administrative limits, landslide perimeters), resulting in 650 distinct zones.
+          The zones themselves were analysed using ELECTRE-TRI method, which divided the zones into three categories - favourable, doubtful, and unfavourable. The ELECTRE-TRI uses four additional imput parameters for each criterion - weight, indifference, preference, and veto.
+          Weight is a relative importance of the criterion, indifference is the largest value that can be considered indignificant, preference is the smallest value that advantages the criterion, and veto is a specific rule which overrides other parameters (limit on noise set by regulation automatically excludes all areas above limit).
+          </p>
+          <div class = "feature-image">
+          <img src="zonation.png">
+          </div>
+          <p style="font-size:0.8rem; font-style:italic">
+          adapted from Florent Joerin, Marius Thériault & Andre Musy (2001) Using GIS and
+            outranking multicriteria analysis for land-use suitability assessment, International Journal of
+            Geographical Information Science, 15:2, 166, DOI: 10.1080/13658810051030487
+        </p>
+          <p>
+          The result of this study was a interactive map showing zones favourable for building of houses. However, the researchers have conducted this study mainly to demonstarte the feasibility and possible application of using MCA in conjunction with GIS software, which at that time was an emerging field.
+          The study presents clear frmaework for conducting MCA using spatial data that can be easily applied to other research questions.
+          <p>
+          <div class = "feature-image">
+          <img src="suitability.png">
+          </div>
+          <p style="font-size:0.8rem; font-style:italic">
+          adapted from Florent Joerin, Marius Thériault & Andre Musy (2001) Using GIS and
+            outranking multicriteria analysis for land-use suitability assessment, International Journal of
+            Geographical Information Science, 15:2, 169, DOI: 10.1080/13658810051030487
+        </p>
+          <p>
+          Reference: Florent Joerin, Marius Thériault & Andre Musy (2001) Using GIS and
+outranking multicriteria analysis for land-use suitability assessment, International Journal of
+Geographical Information Science, 15:2, 153-174, DOI: 10.1080/13658810051030487
+</p>
+          
           </div>
 
-          <!-- METHODS -->
-          <div class="content-card">
-
-            <h2>Methods</h2>
-
-            <p>
-              Describe the GIS workflow and methods used.
-            </p>
-
-            <ul>
-              <li>Data collection</li>
-              <li>Spatial analysis techniques</li>
-              <li>Remote sensing processing</li>
-              <li>Cartographic design choices</li>
-              <li>Software and tools used</li>
-            </ul>
-
-          </div>
-
-          <!-- RESULTS -->
-          <div class="content-card">
-
-            <h2>Results & Findings</h2>
-
-            <p>
-              Explain the major findings of the project.
-              Discuss spatial patterns,
-              environmental implications,
-              or planning recommendations.
-            </p>
-
-            <div class="gallery">
-
-              <div class="gallery-item">
-                MAP / GRAPHIC 1
-              </div>
-
-              <div class="gallery-item">
-                MAP / GRAPHIC 2
-              </div>
-
-              <div class="gallery-item">
-                MAP / GRAPHIC 3
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- REFLECTION -->
-          <div class="content-card">
-
-            <h2>Reflection</h2>
-
-            <p>
-              Discuss lessons learned,
-              project limitations,
-              and ideas for future improvements.
-            </p>
-
-            <p>
-              This section is useful for showing critical thinking,
-              technical growth,
-              and understanding of spatial analysis.
-            </p>
-
-          </div>
-
-        </div>
-
+          
         <!-- SIDEBAR -->
         <div>
 
@@ -222,33 +182,6 @@
 
           </div>
 
-          <!-- SOFTWARE -->
-          <div class="sidebar-card">
-
-            <h3>Software & Tools</h3>
-
-            <p>QGIS</p>
-
-            <p>ArcGIS Pro</p>
-
-            <p>Google Earth Engine</p>
-
-            <p>MapLibre GL</p>
-
-            <p>Python</p>
-
-          </div>
-
-          <!-- DOWNLOADS -->
-          <div class="sidebar-card">
-
-            <h3>Downloads</h3>
-
-            <a href="#" class="button">
-              Download Map
-            </a>
-
-          </div>
 
         </div>
 
